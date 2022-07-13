@@ -86,12 +86,13 @@ function AutentificarUsuario(callback) {
 }
 
 //Função que exibe of livros registrados no sistema.
-function LivrosDisponiveis(callback) {
+function LivrosDisponiveis(id, callback) {
     const lerlivros = new Client(conexao);
     lerlivros.connect();
     
     const sql = "SELECT * FROM livros WHERE alugado=$1";
-    lerlivros.query(sql, 
+    const values = [id];
+    lerlivros.query(sql, values,
         function (err, res) {
             if(err) {
                 callback(err.message, undefined);
@@ -190,8 +191,8 @@ function deletarLivros(id, callback) {
             callback(err.message, undefined);                
         }
         else if (res.rows && res.rows.length > 0) {
-            let produto = res.rows[0];
-            callback(undefined, produto);
+            let livro = res.rows[0];
+            callback(undefined, livro);
         }
         else {
             const error = "Valor não encontrado";
